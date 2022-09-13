@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class RotateCamera : MonoBehaviour
 {
     [Tooltip("The parent object containing the object(s) that should be in focus.")]
@@ -27,6 +26,7 @@ public class RotateCamera : MonoBehaviour
         transform.LookAt(center);      
         editPosition = new Vector3(center.x, 20f, center.z);
         shouldMove = true;
+        
     }
 
     // Update is called once per frame
