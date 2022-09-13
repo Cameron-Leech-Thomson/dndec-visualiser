@@ -26,7 +26,6 @@ public class RotateCamera : MonoBehaviour
         transform.LookAt(center);      
         editPosition = new Vector3(center.x, 20f, center.z);
         shouldMove = true;
-        
     }
 
     // Update is called once per frame
