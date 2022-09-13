@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6569853647235388475}
   - component: {fileID: 6569853647235388468}
   - component: {fileID: 2097953825455327236}
+  - component: {fileID: 7323894706664114035}
   m_Layer: 0
   m_Name: Hexagon
   m_TagString: Untagged
@@ -683,3 +684,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &7323894706664114035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6569853647235388469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76f87c244cc8d24f98f45887ff39fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anchor: {fileID: 2988080344296069292, guid: 810f4b95e50d2b845a9c9d086c134616, type: 3}
