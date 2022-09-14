@@ -18,7 +18,7 @@ public class PlaceBlockFromClick : MonoBehaviour
     private void Start()
     {
         cam = Camera.main;
-        target = LayerMask.GetMask("Screencast Target", "Tile", "Anchor");
+        target = LayerMask.GetMask("Screencast Target", "Tile", "Tile Anchor");
         foreach (Transform child in targetParent.transform){
             sceneObjects.Add(child);
         }
@@ -43,7 +43,7 @@ public class PlaceBlockFromClick : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100, target)){
                 GameObject objectHit = hit.transform.gameObject;
                 // Snapping to Anchors:
-                if (objectHit.layer == LayerMask.NameToLayer("Anchor")){
+                if (objectHit.layer == LayerMask.NameToLayer("Tile Anchor")){
                     placingObject.transform.position = objectHit.transform.position;
                     canPlace = true;
                 } // Stopping overlap: 
