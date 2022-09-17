@@ -34,6 +34,10 @@ public class PlaceBlockFromClick : MonoBehaviour
         }        
     }
 
+    public bool isPlacing(){
+        return placing;
+    }
+
     private void Update() {
         if (placing){
             bool canPlace = false;
@@ -41,7 +45,7 @@ public class PlaceBlockFromClick : MonoBehaviour
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 100, target)){
-                GameObject objectHit = hit.transform.gameObject;
+                GameObject objectHit = hit.collider.gameObject;
                 // Snapping to Anchors:
                 if (objectHit.layer == LayerMask.NameToLayer("Tile Anchor")){
                     placingObject.transform.position = objectHit.transform.position;

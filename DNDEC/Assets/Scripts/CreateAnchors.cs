@@ -11,6 +11,8 @@ public class CreateAnchors : MonoBehaviour
     private float angle = 60f;
     private float distance = 2.165f;
 
+    private List<GameObject> anchors = new List<GameObject>();
+
     void Start() {
         if (startWithAnchors){
             createAnchors();
@@ -29,9 +31,34 @@ public class CreateAnchors : MonoBehaviour
         }
     }
 
+    public void recalculateAnchors(){
+        destroyAnchors();
+        anchors.Clear();
+        createAnchors();
+    }
+
+    // ONLY USE ON DESTROY OF A TILE:
+    public void destroyAnchors(){
+        foreach(GameObject anchor in anchors){
+            Destroy(anchor);
+        }
+        anchors.Clear();
+    }
+
     void placeAnchor(Vector3 position){
         GameObject obj = Instantiate(anchor, position, new Quaternion(0f, 0f, 0f, 1f)) as GameObject;
+        obj.transform.parent = gameObject.transform;
         obj.GetComponent<SphereCollider>().radius = distance / 2;
+        anchors.Add(obj);
+    }
+
+    public void removeAnchor(GameObject anchor){
+        if (anchors.Contains(anchor)){
+            anchors.Remove(anchor);
+        } else{
+            Debug.LogWarning("Attempted to remove anchor " + anchor.name +
+                " (of " + anchor.transform.parent.gameObject.name + ") from tile " + gameObject.name + ".");
+        }
     }
 
     // Update is called once per frame

@@ -6,6 +6,7 @@ public class RotateCamera : MonoBehaviour
     [Tooltip("The parent object containing the object(s) that should be in focus.")]
     public Transform target;
 
+    private int currentChildren = 0;
     private Vector3 center = Vector3.zero;
     private Vector3 defaultPosition; 
     private Vector3 editPosition = new Vector3(0, 20f, 0);
@@ -15,6 +16,7 @@ public class RotateCamera : MonoBehaviour
     {
         defaultPosition = transform.position;
         if (target.childCount > 0){
+            currentChildren = target.childCount;
             // Get center of all GameObjects:
             foreach (Transform child in target){
                 center += child.position;
@@ -31,7 +33,18 @@ public class RotateCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (shouldMove) transform.RotateAround(center, Vector3.up, 25 * Time.deltaTime);
+        if (shouldMove){
+            transform.RotateAround(center, Vector3.up, 20 * Time.deltaTime);
+        } else{
+            if (currentChildren != target.childCount){
+                // Get center of all GameObjects:
+                foreach (Transform child in target){
+                    center += child.position;
+                }
+            center = center / target.childCount;    
+            editPosition = new Vector3(center.x, 20f, center.z);
+            }
+        }
     }
 
     private void zoom(float inc){
