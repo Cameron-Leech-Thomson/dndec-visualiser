@@ -63,10 +63,18 @@ public class RotateCamera : MonoBehaviour
         zoom(-5f);
     }
 
-    public void pauseCamera(){
+    public void cameraEdit(){
         shouldMove = false;
         transform.position = editPosition;
         transform.LookAt(center);
+    }
+
+    public void pauseCamera(){
+        shouldMove = false;
+    }
+
+    public void playCamera(){
+        shouldMove = true;
     }
 
     public void moveCamera(){

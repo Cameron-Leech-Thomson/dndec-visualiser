@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 using System.Linq;
 
 public class PlacementController : MonoBehaviour
@@ -8,6 +10,7 @@ public class PlacementController : MonoBehaviour
     public GameObject target;
     public GameObject menuContainer;
     public Camera mainCamera;
+    public TileOptions options;
 
     private List<GameObject> tiles = new List<GameObject>();
     private List<PlaceBlockFromClick> buttons;
@@ -35,15 +38,14 @@ public class PlacementController : MonoBehaviour
     {
         // Check for new tiles:
         if (target.transform.childCount != tiles.Count){
+            tiles.Clear();
             foreach (Transform child in target.transform){
-                if (!tiles.Contains(child.gameObject)){
-                    tiles.Add(child.gameObject);
-                }
+                tiles.Add(child.gameObject);
             }
         }
 
         // ---------------------------- SELECTION HIGHLIGHTS:
-        // Check if user is trying to select a tile:
+        // Check if user is trying to place a tile:
         bool isPlacing = false;
         foreach(PlaceBlockFromClick tilePicker in buttons){
             if (tilePicker.isPlacing()){
@@ -65,12 +67,7 @@ public class PlacementController : MonoBehaviour
                 bool isDestroyed = false;
                 // If the user selects the tile:
                 if(Input.GetKeyDown(KeyCode.Mouse0)){
-                    // Open actions menu:
-                    if (target.transform.childCount > 1){
-                        // Can't delete every tile:
-                        Destroy(obj);
-                        isDestroyed = true;
-                    }                    
+                    options.selectObject(obj);
                 }
 
                 // Apply coroutine to turn it off after a set time, but only if the object hasn't been destroyed:
