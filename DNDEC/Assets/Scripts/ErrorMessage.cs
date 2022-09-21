@@ -60,7 +60,7 @@ public class ErrorMessage : MonoBehaviour
 
     private IEnumerator lerpPosition(Vector3 start, Vector3 finish, float d){
         float time = 0;
-        while (time < duration){
+        while (time < d){
             transform.localPosition = Vector3.Lerp(start, finish, time / d);
             time += Time.deltaTime;
             yield return null;

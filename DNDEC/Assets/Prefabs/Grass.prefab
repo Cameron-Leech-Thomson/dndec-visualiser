@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2097953825455327236}
   - component: {fileID: 7323894706664114035}
   - component: {fileID: 299291126716682562}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -698,6 +698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anchor: {fileID: 2988080344296069292, guid: 810f4b95e50d2b845a9c9d086c134616, type: 3}
+  capsule: {fileID: 2729791626424786056, guid: 6ae592c4be5e97440a9df1593c868803, type: 3}
   startWithAnchors: 0
 --- !u!114 &299291126716682562
 MonoBehaviour:

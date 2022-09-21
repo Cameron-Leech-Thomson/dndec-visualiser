@@ -64,21 +64,15 @@ public class PlacementController : MonoBehaviour
                 renderer.material.EnableKeyword(emissionBool);
 
                 // ---------------------------- SELECTION:
-                bool isDestroyed = false;
                 // If the user selects the tile:
                 if(Input.GetKeyDown(KeyCode.Mouse0)){
                     options.selectObject(obj);
                 }
 
                 // Apply coroutine to turn it off after a set time, but only if the object hasn't been destroyed:
-                if (!isDestroyed){
-                    StartCoroutine(resetEmission(renderer));
-                }                
+                StartCoroutine(resetEmission(renderer));                
             }
         }
-
-        
-
     }
     
 

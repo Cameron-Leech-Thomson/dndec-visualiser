@@ -16,6 +16,7 @@ public class CreateAnchors : MonoBehaviour
     void Start() {
         if (startWithAnchors){
             createAnchors();
+            recalculateAnchors();
         }
     }
 
@@ -32,8 +33,16 @@ public class CreateAnchors : MonoBehaviour
     }
 
     public void recalculateAnchors(){
+        StartCoroutine(createNewAnchors());
+    }
+
+    private IEnumerator removeAnchors(){
         destroyAnchors();
-        anchors.Clear();
+        yield return new WaitForSeconds(0.1f);
+    }
+
+    private IEnumerator createNewAnchors(){
+        yield return StartCoroutine(removeAnchors());
         createAnchors();
     }
 
