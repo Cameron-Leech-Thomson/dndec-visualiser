@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.ProBuilder;
 
 public class TileOptions : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class TileOptions : MonoBehaviour
     private bool placing = false;
     private bool donePlacing = false;
     private Camera cam;
+    private float minHeight = 0.25f;
+    private float maxHeight = 5f;
 
     void Start() {
         cam = Camera.main;
@@ -31,6 +34,74 @@ public class TileOptions : MonoBehaviour
 
     public void stopPlacing(){
         this.donePlacing = true;
+    }
+
+    public void increaseHeight(){
+        StopCoroutine(deselectObject());
+        changeHeight(0.25f);
+        StartCoroutine(deselectObject());
+    }
+
+    public void decreaseHeight(){
+        StopCoroutine(deselectObject());
+        changeHeight(-0.25f);
+        StartCoroutine(deselectObject());
+    }
+
+    private void changeHeight(float diff){
+        // Get the mesh data from ProBuilder:
+        ProBuilderMesh mesh = selectedObject.GetComponent<ProBuilderMesh>();
+        Vertex[] vertices = mesh.GetVertices();
+        if (heightOutOfBounds(vertices[0], diff)){
+            return;
+        }
+        List<Vector3> positions = new List<Vector3>();
+        // Update the mesh data:
+        foreach(Vertex v in vertices){
+            float newY = v.position.y;
+            if (newY > 0f){
+                newY += diff;
+            }
+            else{
+                newY -= diff;
+            }
+            Vector3 newPosition = new Vector3(v.position.x, newY, v.position.z);
+            v.position = newPosition;
+            positions.Add(newPosition);
+        }
+        // Apply the changes and rebuild the mesh:
+        mesh.SetVertices(vertices);
+        mesh.RebuildWithPositionsAndFaces(positions, mesh.faces);
+        mesh.Refresh();
+        // Move the object to be flush with the rest:
+        Vector3 pos = selectedObject.transform.position;
+        selectedObject.transform.position = new Vector3(pos.x, pos.y + diff, pos.z);
+        // Update the anchor positions:
+        selectedObject.GetComponent<CreateAnchors>().recalculateAnchors();
+    }
+
+    private bool heightOutOfBounds(Vertex v, float diff){
+        // This is absolutely grim but I'm too tired to figure out a better way:
+        float currentHeight = Mathf.Abs(v.position.y);
+        if (currentHeight >= maxHeight || currentHeight <= minHeight){
+            string message = null;
+            if (currentHeight >= maxHeight && diff > 0f){
+                message = "Maximum height reached.";
+            } 
+            if (currentHeight <= minHeight && diff < 0f){
+                message = "Minimum height reached.";
+            }
+            if (message == null){
+                return false;
+            }
+            if (transform.parent.GetComponentInChildren<ErrorMessage>() == null){
+                ErrorMessage error = Instantiate(errorMessage, Vector3.zero, new Quaternion(0f, 0f, 0f, 1f), transform.parent) as ErrorMessage;
+                error.createErrorMessage(message);
+            }
+            return true;
+        } else{
+            return false;
+        }
     }
 
     public void deleteObject(){

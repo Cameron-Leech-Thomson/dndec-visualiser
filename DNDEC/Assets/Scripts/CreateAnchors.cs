@@ -24,6 +24,7 @@ public class CreateAnchors : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             Vector3 pos = Quaternion.Euler(0f, angle * i, 0f) * (transform.forward * distance) + transform.position;
+            pos = new Vector3(pos.x, 0f, pos.z);
 
             Collider[] hitColliders = Physics.OverlapSphere(pos, distance / 4, LayerMask.GetMask("Tile", "Tile Anchor"));
             if (hitColliders.Length == 0){
