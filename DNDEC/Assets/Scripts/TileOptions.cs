@@ -30,7 +30,6 @@ public class TileOptions : MonoBehaviour
     }
 
     public void stopPlacing(){
-        Debug.Log("Stopping...");
         this.donePlacing = true;
     }
 

@@ -85,4 +85,8 @@ public class MoveTile : MonoBehaviour
             child.gameObject.GetComponent<CreateAnchors>().recalculateAnchors();
         }
     }
+
+    public bool isMoving(){
+        return shouldMove;
+    }
 }

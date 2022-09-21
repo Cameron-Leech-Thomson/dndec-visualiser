@@ -41,17 +41,13 @@ public class PlacementController : MonoBehaviour
             tiles.Clear();
             foreach (Transform child in target.transform){
                 tiles.Add(child.gameObject);
+                child.gameObject.GetComponent<Renderer>().SetPropertyBlock(materialPropertyBlock);
             }
         }
 
         // ---------------------------- SELECTION HIGHLIGHTS:
         // Check if user is trying to place a tile:
-        bool isPlacing = false;
-        foreach(PlaceBlockFromClick tilePicker in buttons){
-            if (tilePicker.isPlacing()){
-                isPlacing = true;
-            }
-        }
+        bool isPlacing = gameObject.GetComponent<MoveTile>().isMoving();
         // Only allow user to select a tile if they aren't already trying to place one:
         if (!isPlacing){
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
