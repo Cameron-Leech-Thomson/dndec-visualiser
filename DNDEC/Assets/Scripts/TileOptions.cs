@@ -79,6 +79,18 @@ public class TileOptions : MonoBehaviour
         selectedObject.transform.position = new Vector3(pos.x, pos.y + diff, pos.z);
         // Update the anchor positions:
         selectedObject.GetComponent<CreateAnchors>().recalculateAnchors();
+
+        // Move toppers for grass / stone:
+        if(selectedObject.name.Contains("Grass")){
+            GameObject top = selectedObject.transform.GetChild(0).gameObject;
+            Vector3 topPos = top.transform.position;
+            top.transform.position = new Vector3(topPos.x, topPos.y + diff, topPos.z);
+        }
+        if(selectedObject.name.Contains("Stone")){
+            GameObject top = selectedObject.GetComponentInChildren<MeshGenerator>().gameObject;
+            Vector3 topPos = top.transform.position;
+            top.transform.position = new Vector3(topPos.x, topPos.y + diff, topPos.z);
+        }
     }
 
     private bool heightOutOfBounds(Vertex v, float diff){
@@ -123,7 +135,7 @@ public class TileOptions : MonoBehaviour
             setInteractable(false);
             stopAllCoroutines();
             cam.GetComponent<RotateCamera>().cameraEdit();
-            selectedObject.GetComponent<CreateAnchors>().destroyAnchors();
+            selectedObject.GetComponentInParent<CreateAnchors>().destroyAnchors();
             selectedObject.layer = 0;
             StartCoroutine(moveTile.movingObject(selectedObject));
             placing = true;

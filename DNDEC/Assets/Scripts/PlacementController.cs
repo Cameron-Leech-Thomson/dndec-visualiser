@@ -41,7 +41,11 @@ public class PlacementController : MonoBehaviour
             tiles.Clear();
             foreach (Transform child in target.transform){
                 tiles.Add(child.gameObject);
-                child.gameObject.GetComponent<Renderer>().SetPropertyBlock(materialPropertyBlock);
+                Renderer[] rends = child.gameObject.GetComponentsInChildren<Renderer>();
+                foreach(Renderer rend in rends){
+                    rend.SetPropertyBlock(materialPropertyBlock);
+                    rend.material.DisableKeyword(emissionBool);
+                }                
             }
         }
 
@@ -54,10 +58,12 @@ public class PlacementController : MonoBehaviour
             RaycastHit hit;
             // If the user is hovering over a tile:
             if (Physics.Raycast(ray, out hit, 100, LayerMask.GetMask("Tile"))){
-                GameObject obj = hit.collider.gameObject;
+                GameObject obj = hit.collider.gameObject.GetComponentInParent<Tile>().gameObject;
                 // Apply an emission on the object:
-                Renderer renderer = obj.GetComponent<Renderer>();
-                renderer.material.EnableKeyword(emissionBool);
+                Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
+                foreach(Renderer renderer in renderers){
+                    renderer.material.EnableKeyword(emissionBool);
+                }                
 
                 // ---------------------------- SELECTION:
                 // If the user selects the tile:
@@ -66,16 +72,18 @@ public class PlacementController : MonoBehaviour
                 }
 
                 // Apply coroutine to turn it off after a set time, but only if the object hasn't been destroyed:
-                StartCoroutine(resetEmission(renderer));                
+                StartCoroutine(resetEmission(renderers));                
             }
         }
     }
     
 
-    private IEnumerator resetEmission(Renderer renderer){
+    private IEnumerator resetEmission(Renderer[] renderers){
         yield return new WaitForSeconds(0.5f);
-        if (renderer != null){
-            renderer.material.DisableKeyword(emissionBool);
+        if (renderers.Length != 0){
+            foreach(Renderer renderer in renderers){
+                renderer.material.DisableKeyword(emissionBool);
+            }  
         }
     }
 }
