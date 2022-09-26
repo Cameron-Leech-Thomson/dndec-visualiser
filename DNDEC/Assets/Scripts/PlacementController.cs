@@ -18,6 +18,7 @@ public class PlacementController : MonoBehaviour
 
     private string emissionID = "_EmissionColor";
     private string emissionBool = "_EMISSION";
+    private bool shouldHighlight = true;
 
     // Start is called before the first frame update
     void Start()
@@ -36,43 +37,45 @@ public class PlacementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Check for new tiles:
-        if (target.transform.childCount != tiles.Count){
-            tiles.Clear();
-            foreach (Transform child in target.transform){
-                tiles.Add(child.gameObject);
-                Renderer[] rends = child.gameObject.GetComponentsInChildren<Renderer>();
-                foreach(Renderer rend in rends){
-                    rend.SetPropertyBlock(materialPropertyBlock);
-                    rend.material.DisableKeyword(emissionBool);
-                }                
-            }
-        }
-
-        // ---------------------------- SELECTION HIGHLIGHTS:
-        // Check if user is trying to place a tile:
-        bool isPlacing = gameObject.GetComponent<MoveTile>().isMoving();
-        // Only allow user to select a tile if they aren't already trying to place one:
-        if (!isPlacing){
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            // If the user is hovering over a tile:
-            if (Physics.Raycast(ray, out hit, 100, LayerMask.GetMask("Tile"))){
-                GameObject obj = hit.collider.gameObject.GetComponentInParent<Tile>().gameObject;
-                // Apply an emission on the object:
-                Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
-                foreach(Renderer renderer in renderers){
-                    renderer.material.EnableKeyword(emissionBool);
-                }                
-
-                // ---------------------------- SELECTION:
-                // If the user selects the tile:
-                if(Input.GetKeyDown(KeyCode.Mouse0)){
-                    options.selectObject(obj);
+        if (shouldHighlight){
+            // Check for new tiles:
+            if (target.transform.childCount != tiles.Count){
+                tiles.Clear();
+                foreach (Transform child in target.transform){
+                    tiles.Add(child.gameObject);
+                    Renderer[] rends = child.gameObject.GetComponentsInChildren<Renderer>();
+                    foreach(Renderer rend in rends){
+                        rend.SetPropertyBlock(materialPropertyBlock);
+                        rend.material.DisableKeyword(emissionBool);
+                    }                
                 }
+            }
 
-                // Apply coroutine to turn it off after a set time, but only if the object hasn't been destroyed:
-                StartCoroutine(resetEmission(renderers));                
+            // ---------------------------- SELECTION HIGHLIGHTS:
+            // Check if user is trying to place a tile:
+            bool isPlacing = gameObject.GetComponent<MoveTile>().isMoving();
+            // Only allow user to select a tile if they aren't already trying to place one:
+            if (!isPlacing){
+                Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                // If the user is hovering over a tile:
+                if (Physics.Raycast(ray, out hit, 100, LayerMask.GetMask("Tile"))){
+                    GameObject obj = hit.collider.gameObject.GetComponentInParent<Tile>().gameObject;
+                    // Apply an emission on the object:
+                    Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
+                    foreach(Renderer renderer in renderers){
+                        renderer.material.EnableKeyword(emissionBool);
+                    }                
+
+                    // ---------------------------- SELECTION:
+                    // If the user selects the tile:
+                    if(Input.GetKeyDown(KeyCode.Mouse0)){
+                        options.selectObject(obj);
+                    }
+
+                    // Apply coroutine to turn it off after a set time, but only if the object hasn't been destroyed:
+                    StartCoroutine(resetEmission(renderers));                
+                }
             }
         }
     }
@@ -85,5 +88,9 @@ public class PlacementController : MonoBehaviour
                 renderer.material.DisableKeyword(emissionBool);
             }  
         }
+    }
+
+    public void SetHighlightBool(bool val){
+        this.shouldHighlight = val;
     }
 }
