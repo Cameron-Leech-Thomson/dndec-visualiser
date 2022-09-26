@@ -28,6 +28,9 @@ public class DataManager : MonoBehaviour
         string[] files = Directory.GetFiles(path, "*.json");
         string str = "";
         GameObject scrollContent = loadMenu.GetComponentInChildren<ScrollRect>().content.gameObject;
+        foreach(Transform child in scrollContent.transform){
+            Destroy(child.gameObject);
+        }
 
         foreach(string path in files){
             int start = path.LastIndexOf('/') + 1;
@@ -60,7 +63,7 @@ public class DataManager : MonoBehaviour
     }
 
     private void AddTileFromData(TileData data){
-        Vector3 pos = new Vector3(data.pos[0], data.pos[1], data.pos[2]);
+        Vector3 pos = new Vector3(data.pos[0], 0f, data.pos[2]);
         
         GameObject tile = Instantiate(Resources.Load<GameObject>("Prefabs/" + data.type), pos, new Quaternion(0f, 0f, 0f, 1f), target.transform);
         
@@ -95,6 +98,7 @@ public class DataManager : MonoBehaviour
         }
 
         System.IO.File.WriteAllText(path + name + ".json", target);
+        LoadAllFiles();
     }
 
     private void UpdateTargetData() {

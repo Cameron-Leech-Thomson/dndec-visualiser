@@ -38,12 +38,14 @@ public class TileOptions : MonoBehaviour
     }
 
     public void increaseHeight(){
+        if (selectedObject == null) return;
         stopAllCoroutines();
         changeHeight(0.25f);
         StartCoroutine(deselectObject());
     }
 
     public void decreaseHeight(){
+        if (selectedObject == null) return;
         stopAllCoroutines();
         changeHeight(-0.25f);
         StartCoroutine(deselectObject());
@@ -118,6 +120,7 @@ public class TileOptions : MonoBehaviour
     }
 
     public void deleteObject(){
+        if (selectedObject == null) return;
         if (target.transform.childCount > 1){
             Destroy(selectedObject);
             setInteractable(false);
@@ -131,6 +134,7 @@ public class TileOptions : MonoBehaviour
     }
 
     public void moveObject(){
+        if (selectedObject == null) return;
         if (target.transform.childCount > 1){
             setInteractable(false);
             stopAllCoroutines();

@@ -41,8 +41,8 @@ public class RotateCamera : MonoBehaviour
                 foreach (Transform child in target){
                     center += child.position;
                 }
-            center = center / target.childCount;    
-            editPosition = new Vector3(center.x, 20f, center.z);
+                center = center / target.childCount;    
+                editPosition = new Vector3(center.x, 20f, center.z);
             }
         }
     }
