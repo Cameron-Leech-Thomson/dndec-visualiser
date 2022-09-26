@@ -73,7 +73,7 @@ public class PlacementController : MonoBehaviour
     
 
     private IEnumerator resetEmission(Renderer renderer){
-        yield return new WaitForSeconds(0.5f);            
+        yield return new WaitForSeconds(0.5f);
         if (renderer != null){
             renderer.material.DisableKeyword(emissionBool);
         }

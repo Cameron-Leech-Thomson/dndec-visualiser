@@ -12,6 +12,7 @@ public class TileOptions : MonoBehaviour
     public ErrorMessage errorMessage;
     private GameObject selectedObject = null;
     private List<Button> buttons;
+    private List<Coroutine> coroutines = new List<Coroutine>();
     private bool placing = false;
     private bool donePlacing = false;
     private Camera cam;
@@ -37,13 +38,13 @@ public class TileOptions : MonoBehaviour
     }
 
     public void increaseHeight(){
-        StopCoroutine(deselectObject());
+        stopAllCoroutines();
         changeHeight(0.25f);
         StartCoroutine(deselectObject());
     }
 
     public void decreaseHeight(){
-        StopCoroutine(deselectObject());
+        stopAllCoroutines();
         changeHeight(-0.25f);
         StartCoroutine(deselectObject());
     }
@@ -120,7 +121,7 @@ public class TileOptions : MonoBehaviour
     public void moveObject(){
         if (target.transform.childCount > 1){
             setInteractable(false);
-            StopCoroutine(deselectObject());
+            stopAllCoroutines();
             cam.GetComponent<RotateCamera>().cameraEdit();
             selectedObject.GetComponent<CreateAnchors>().destroyAnchors();
             selectedObject.layer = 0;
@@ -135,9 +136,17 @@ public class TileOptions : MonoBehaviour
     }
 
     public void selectObject(GameObject obj){
+        stopAllCoroutines();
         selectedObject = obj;
         setInteractable(true);
         StartCoroutine(deselectObject());
+    }
+
+    private void stopAllCoroutines(){
+        foreach(Coroutine deselect in coroutines){
+            StopCoroutine(deselect);
+        }
+        coroutines.Clear();
     }
 
     private void setInteractable(bool val){
@@ -147,6 +156,13 @@ public class TileOptions : MonoBehaviour
     }
 
     private IEnumerator deselectObject(){
+        Coroutine deselection = StartCoroutine(deselectingObject());
+        coroutines.Add(deselection);
+        yield return deselection;
+        coroutines.Remove(deselection);
+    }
+
+    private IEnumerator deselectingObject(){
         yield return new WaitForSeconds(10f);
         setInteractable(false);
         selectedObject = null;

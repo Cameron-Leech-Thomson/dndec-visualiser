@@ -8,6 +8,7 @@ public class PlaceBlockFromClick : MonoBehaviour
     public GameObject objectToPlace;
     public GameObject targetParent;
     public MoveTile moveTile;
+    public bool rotateTop = false;
     private GameObject placingObject = null;
     private bool placing = false;
     private bool donePlacing = false;
@@ -26,6 +27,11 @@ public class PlaceBlockFromClick : MonoBehaviour
         if (!placing){
             placing = true;
             placingObject = Instantiate(objectToPlace) as GameObject;
+            if (rotateTop){
+                Transform top = placingObject.transform.GetChild(0);
+                float rotation = Random.Range(0,6);
+                top.rotation = Quaternion.Euler(0f, 60 * rotation, 0f);
+            }
             placingObject.transform.parent = targetParent.transform;
             (cam.GetComponent<RotateCamera>() as RotateCamera).cameraEdit();
             StartCoroutine(moveTile.movingObject(placingObject));
