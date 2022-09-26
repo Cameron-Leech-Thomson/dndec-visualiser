@@ -86,7 +86,7 @@ public class TileOptions : MonoBehaviour
             Vector3 topPos = top.transform.position;
             top.transform.position = new Vector3(topPos.x, topPos.y + diff, topPos.z);
         }
-        if(selectedObject.name.Contains("Stone")){
+        if(selectedObject.name.Contains("Stone") || selectedObject.name.Contains("Dirt")){
             GameObject top = selectedObject.GetComponentInChildren<MeshGenerator>().gameObject;
             Vector3 topPos = top.transform.position;
             top.transform.position = new Vector3(topPos.x, topPos.y + diff, topPos.z);
