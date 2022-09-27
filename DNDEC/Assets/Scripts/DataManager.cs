@@ -50,7 +50,10 @@ public class DataManager : MonoBehaviour
         uiContainer.SetActive(true);
         loadMenu.SetActive(false);
         Target loadedTarget = JsonUtility.FromJson<Target>(System.IO.File.ReadAllText(path));
-
+        if (loadedTarget.skybox != null){
+            RenderSettings.skybox = Resources.Load<Material>("Skyboxes/" + loadedTarget.skybox);
+        }
+        
         // Destroy all current tiles:
         foreach(Transform child in target.transform){
             Destroy(child.gameObject);
@@ -103,6 +106,7 @@ public class DataManager : MonoBehaviour
 
     private void UpdateTargetData() {
         _Target.tiles.Clear();
+        _Target.skybox = RenderSettings.skybox.name;
         foreach(Transform tile in target.transform){
             TileData data = new TileData();
             // Get object type:
@@ -134,9 +138,11 @@ public class DataManager : MonoBehaviour
 public class Target{
     public List<TileData> tiles = new List<TileData>();
 
+    public string skybox = null;
+
     public override string ToString()
     {
-        string str = "";
+        string str = "Skybox: " + skybox + "\n";
 
         for(int i = 0; i < tiles.Count; i++){
             str += i + ": " + tiles[i].ToString() + "\n";

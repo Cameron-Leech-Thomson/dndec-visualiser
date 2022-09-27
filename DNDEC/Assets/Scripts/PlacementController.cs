@@ -90,6 +90,19 @@ public class PlacementController : MonoBehaviour
         }
     }
 
+    public void ClearEncounter(){
+        // Remove all tiles:
+        foreach(GameObject tile in tiles){
+            Destroy(tile);
+        }
+        tiles.Clear();
+        // Add new tile:
+        GameObject newTile = Instantiate(Resources.Load<GameObject>("Prefabs/Grass"),
+            Vector3.zero, Quaternion.Euler(0f, 0f, 0f), target.transform);
+        newTile.GetComponent<CreateAnchors>().createAnchors();
+        tiles.Add(newTile);
+    }
+
     public void SetHighlightBool(bool val){
         this.shouldHighlight = val;
     }
