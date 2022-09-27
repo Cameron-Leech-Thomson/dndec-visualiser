@@ -1,2 +1,2 @@
-# dnd-encounter-visualiser
+# DNDEC - A Tool for Building D&D Encounters
  
