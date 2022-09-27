@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - DifficultTerrain
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - UI
   - Tile
   - Tile Anchor
-  - 
-  - 
+  - Character Anchor
+  - Character
   - Object 1 (Grass)
   - Object 2 (Water)
   - Object 3 (Stone)

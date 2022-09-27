@@ -72,6 +72,9 @@ public class DataManager : MonoBehaviour
         
         TileOptions options = FindObjectOfType<TileOptions>();
         options.selectObject(tile);
+
+        if (data.isDifficultTerrain) options.setDifficultTerrain();
+        
         for(int i = 0; i < data.height; i++){
             options.increaseHeight();
         }
@@ -128,6 +131,8 @@ public class DataManager : MonoBehaviour
             Vertex[] vertices = mesh.GetVertices();
             float height = (Mathf.Abs(vertices[0].position.y) / 0.25f) - 1;
             data.height = (int)height;
+            // Get difficulty:
+            data.isDifficultTerrain = tile.GetComponent<Tile>().isDifficultTerrain();
             // Add it to target data:
             _Target.tiles.Add(data);
         }
@@ -161,10 +166,18 @@ public class TileData{
     public float[] pos;
     
     // number of times height was increased; 
-    public int height;
+    public int height = 0;
+
+    public bool isDifficultTerrain = false;
 
     public override string ToString()
     {
-        return "Tile of Type: " + type + " at Position: (" + pos[0] + ", " + pos[1] + ", " + pos[2] + ") with Height: " + height;
+        string formatDifficulty;
+        if (isDifficultTerrain){
+            formatDifficulty = "difficult terrain";
+        } else{
+            formatDifficulty = "not difficult terrain";
+        }
+        return "Tile of Type: " + type + " (" + formatDifficulty + ") at Position: (" + pos[0] + ", " + pos[1] + ", " + pos[2] + ") with Height: " + height;
     }
 }

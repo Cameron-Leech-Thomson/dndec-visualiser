@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.ProBuilder;
+using TMPro;
 
 public class TileOptions : MonoBehaviour
 {
     public GameObject target;
     public MoveTile moveTile;
+    public GameObject nameCharacter;
     public ErrorMessage errorMessage;
     private GameObject selectedObject = null;
     private List<Button> buttons;
@@ -93,6 +95,31 @@ public class TileOptions : MonoBehaviour
             Vector3 topPos = top.transform.position;
             top.transform.position = new Vector3(topPos.x, topPos.y + diff, topPos.z);
         }
+        Tile tile = selectedObject.GetComponent<Tile>();
+        if(tile.isDifficultTerrain() || tile.hasCharacter()){
+            GameObject terrainMarker = null;
+            GameObject character = null;
+            foreach(Transform child in selectedObject.transform){
+                if (child.gameObject.CompareTag("DifficultTerrain")){
+                    terrainMarker = child.gameObject;
+                }
+                if (child.gameObject.layer == LayerMask.NameToLayer("Character")){
+                    character = child.gameObject;
+                }
+            }
+            if (terrainMarker != null && character == null){
+                Vector3 markerPos = terrainMarker.transform.position;
+                terrainMarker.transform.position = new Vector3(markerPos.x, markerPos.y + diff, markerPos.z);
+            } else if (character != null && terrainMarker == null){
+                Vector3 markerPos = character.transform.position;
+                character.transform.position = new Vector3(markerPos.x, markerPos.y + diff, markerPos.z);
+            } else if (character != null && terrainMarker != null){
+                Vector3 terrainPos = terrainMarker.transform.position;
+                Vector3 characterPos = character.transform.position;
+                character.transform.position = new Vector3(characterPos.x, characterPos.y + diff, characterPos.z);
+                terrainMarker.transform.position = new Vector3(terrainPos.x, characterPos.y + diff + 2.25f, terrainPos.x);
+            }
+        }
     }
 
     private bool heightOutOfBounds(Vertex v, float diff){
@@ -117,6 +144,34 @@ public class TileOptions : MonoBehaviour
         } else{
             return false;
         }
+    }
+
+    public void addCharacter(){
+        Tile tile = selectedObject.GetComponent<Tile>();
+        if (tile.hasCharacter()){
+            if (transform.parent.GetComponentInChildren<ErrorMessage>() == null){
+                ErrorMessage error = Instantiate(errorMessage, Vector3.zero, new Quaternion(0f, 0f, 0f, 1f), transform.parent) as ErrorMessage;
+                error.createErrorMessage("Tile already has a character on it. Move or delete the character to add a new one.");
+            }
+            return;
+        } else{
+            string name = nameCharacter.GetComponentInChildren<TMP_InputField>().text;
+            bool ally = nameCharacter.GetComponentInChildren<Toggle>().isOn;
+
+            tile.addCharacter(name, ally);
+        }
+    }
+
+    public void deleteCharacter(){
+        Tile tile = selectedObject.GetComponent<Tile>();
+        if (tile.hasCharacter()){
+            tile.removeCharacter();
+        }
+    }
+
+    public void setDifficultTerrain(){
+        Tile tile = selectedObject.GetComponent<Tile>();
+        tile.setDifficultTerrain(!tile.isDifficultTerrain());
     }
 
     public void deleteObject(){

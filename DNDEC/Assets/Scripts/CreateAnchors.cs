@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 public class CreateAnchors : MonoBehaviour
 {
 
     public GameObject anchor;
+    public GameObject charAnchor;
     public bool startWithAnchors = false;
 
     private float angle = 60f;
@@ -31,6 +33,7 @@ public class CreateAnchors : MonoBehaviour
                 placeAnchor(pos);
             }
         }
+        placeCharacterAnchor();
     }
 
     public void recalculateAnchors(){
@@ -56,15 +59,33 @@ public class CreateAnchors : MonoBehaviour
     }
 
     void placeAnchor(Vector3 position){
-        GameObject obj = Instantiate(anchor, position, new Quaternion(0f, 0f, 0f, 1f)) as GameObject;
-        obj.transform.parent = gameObject.transform;
+        GameObject obj = Instantiate(anchor, position, new Quaternion(0f, 0f, 0f, 1f), transform) as GameObject;
         obj.GetComponent<SphereCollider>().radius = distance / 2;
         anchors.Add(obj);
+    }
+
+    public void placeCharacterAnchor(){
+        ProBuilderMesh mesh = gameObject.GetComponent<ProBuilderMesh>();
+        Vertex[] vertices = mesh.GetVertices();
+        float height = Mathf.Abs(vertices[0].position.y);
+        GameObject obj = Instantiate(charAnchor, transform.position + new Vector3(0f, 1f + height, 0f), Quaternion.Euler(0f,0f,0f), transform) as GameObject;
+        obj.GetComponent<SphereCollider>().radius = distance / 4;
+        anchors.Add(obj);
+    }
+
+    public GameObject getCharacterAnchor(){
+        foreach(GameObject anchor in anchors){
+            if (anchor.layer == LayerMask.NameToLayer("Character Anchor")){
+                return anchor;
+            }
+        }
+        return null;
     }
 
     public void removeAnchor(GameObject anchor){
         if (anchors.Contains(anchor)){
             anchors.Remove(anchor);
+            Destroy(anchor);
         } else{
             Debug.LogWarning("Attempted to remove anchor " + anchor.name +
                 " (of " + anchor.transform.parent.gameObject.name + ") from tile " + gameObject.name + ".");

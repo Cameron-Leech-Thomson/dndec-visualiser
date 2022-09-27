@@ -698,6 +698,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anchor: {fileID: 2988080344296069292, guid: 810f4b95e50d2b845a9c9d086c134616, type: 3}
+  charAnchor: {fileID: 704337260610593039, guid: 6c0771f8407f21b499a4daf76a9d4efd,
+    type: 3}
   startWithAnchors: 0
 --- !u!114 &7352564288448752675
 MonoBehaviour:
