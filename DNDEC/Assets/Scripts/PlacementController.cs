@@ -62,7 +62,8 @@ public class PlacementController : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, 100, LayerMask.GetMask("Tile"))){
                     GameObject obj = hit.collider.gameObject.GetComponentInParent<Tile>().gameObject;
                     // Apply an emission on the object:
-                    Renderer[] renderers = obj.GetComponentsInChildren<Renderer>();
+                    List<Renderer> renderers = obj.GetComponentsInChildren<Renderer>().ToList<Renderer>();
+                    renderers.RemoveAll(r => r.gameObject.layer != obj.layer);
                     foreach(Renderer renderer in renderers){
                         renderer.material.EnableKeyword(emissionBool);
                     }                
@@ -81,9 +82,9 @@ public class PlacementController : MonoBehaviour
     }
     
 
-    private IEnumerator resetEmission(Renderer[] renderers){
+    private IEnumerator resetEmission(List<Renderer> renderers){
         yield return new WaitForSeconds(0.5f);
-        if (renderers.Length != 0){
+        if (renderers.Count != 0){
             foreach(Renderer renderer in renderers){
                 renderer.material.DisableKeyword(emissionBool);
             }  

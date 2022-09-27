@@ -155,10 +155,21 @@ public class TileOptions : MonoBehaviour
             }
             return;
         } else{
-            string name = nameCharacter.GetComponentInChildren<TMP_InputField>().text;
+            string name = nameCharacter.GetComponentInChildren<TMP_InputField>().text.Trim();
             bool ally = nameCharacter.GetComponentInChildren<Toggle>().isOn;
 
-            tile.addCharacter(name, ally);
+            if (string.IsNullOrEmpty(name)){
+                if (transform.parent.GetComponentInChildren<ErrorMessage>() == null){
+                    ErrorMessage error = Instantiate(errorMessage, Vector3.zero, new Quaternion(0f, 0f, 0f, 1f), transform.parent) as ErrorMessage;
+                    error.createErrorMessage("Name cannot be blank.");
+                }
+                return;
+            } else{
+                tile.addCharacter(name, ally);
+                // Reset values after creating character:
+                nameCharacter.GetComponentInChildren<TMP_InputField>().text = "";
+                nameCharacter.GetComponentInChildren<Toggle>().isOn = true;
+            }            
         }
     }
 

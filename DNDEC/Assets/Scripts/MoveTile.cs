@@ -54,7 +54,9 @@ public class MoveTile : MonoBehaviour
                     selectedObject.layer = LayerMask.NameToLayer("Tile");
                     selectedObject.GetComponent<CreateAnchors>().createAnchors();
                     Destroy(objectHit);
-                    (cam.GetComponent<RotateCamera>() as RotateCamera).moveCamera();
+                    shouldMove = false;
+                } else if (Input.GetKeyDown(KeyCode.Mouse1) && targetParent.transform.childCount > 1){
+                    Destroy(selectedObject);
                     shouldMove = false;
                 }
             }
@@ -73,6 +75,8 @@ public class MoveTile : MonoBehaviour
             yield return null;
         }
         stopMovement();
+        yield return new WaitForSeconds(0.1f);
+        (cam.GetComponent<RotateCamera>() as RotateCamera).moveCamera();
     }
 
     private void stopMovement(){

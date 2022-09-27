@@ -63,6 +63,10 @@ public class DataManager : MonoBehaviour
         foreach(TileData tile in loadedTarget.tiles){
             AddTileFromData(tile);
         }
+
+        foreach(Transform child in target.transform){
+            child.gameObject.GetComponent<CreateAnchors>().recalculateAnchors();
+        }
     }
 
     private void AddTileFromData(TileData data){
@@ -74,7 +78,11 @@ public class DataManager : MonoBehaviour
         options.selectObject(tile);
 
         if (data.isDifficultTerrain) options.setDifficultTerrain();
-        
+
+        if(!string.IsNullOrEmpty(data.character.name.Trim())){
+            tile.GetComponent<Tile>().addCharacter(data.character.name, data.character.ally);
+        }
+
         for(int i = 0; i < data.height; i++){
             options.increaseHeight();
         }
@@ -98,7 +106,7 @@ public class DataManager : MonoBehaviour
         UpdateTargetData();
         string target = JsonUtility.ToJson(_Target);
 
-        string name = saveMenu.GetComponentInChildren<TMP_InputField>().text;
+        string name = saveMenu.GetComponentInChildren<TMP_InputField>().text.Trim();
         if (name == "" || name == null){
             name = ((System.DateTimeOffset)System.DateTime.Now).ToUnixTimeSeconds().ToString();
         }
@@ -133,6 +141,8 @@ public class DataManager : MonoBehaviour
             data.height = (int)height;
             // Get difficulty:
             data.isDifficultTerrain = tile.GetComponent<Tile>().isDifficultTerrain();
+            // Get character:
+            data.character = tile.GetComponent<Tile>().GetCharacter();
             // Add it to target data:
             _Target.tiles.Add(data);
         }
@@ -170,6 +180,8 @@ public class TileData{
 
     public bool isDifficultTerrain = false;
 
+    public CharacterData character = null;
+
     public override string ToString()
     {
         string formatDifficulty;
@@ -179,5 +191,28 @@ public class TileData{
             formatDifficulty = "not difficult terrain";
         }
         return "Tile of Type: " + type + " (" + formatDifficulty + ") at Position: (" + pos[0] + ", " + pos[1] + ", " + pos[2] + ") with Height: " + height;
+    }
+}
+
+[System.Serializable]
+public class CharacterData{
+    public string name;
+
+    public bool ally;
+
+    public CharacterData(string name, bool ally){
+        this.name = name;
+        this.ally = ally;
+    }
+
+    public override string ToString()
+    {
+        string faction;
+        if (ally){
+            faction = "Ally";
+        } else{
+            faction = "Enemy";
+        }
+        return "Faction: " + faction + ", Name: " + name;
     }
 }

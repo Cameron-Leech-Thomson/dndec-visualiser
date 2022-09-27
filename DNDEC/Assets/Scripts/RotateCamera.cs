@@ -37,14 +37,20 @@ public class RotateCamera : MonoBehaviour
             transform.RotateAround(center, Vector3.up, 20 * Time.deltaTime);
         } else{
             if (currentChildren != target.childCount){
-                // Get center of all GameObjects:
-                foreach (Transform child in target){
-                    center += child.position;
-                }
-                center = center / target.childCount;    
-                editPosition = new Vector3(center.x, 20f, center.z);
+                updateCenter();
             }
         }
+    }
+
+    private void updateCenter(){
+        // Get center of all GameObjects:
+        foreach (Transform child in target){
+            center += child.position;
+        }
+        currentChildren = target.childCount;
+
+        center = center / target.childCount;    
+        editPosition = new Vector3(center.x, 20f, center.z);
     }
 
     private void zoom(float inc){
@@ -66,6 +72,7 @@ public class RotateCamera : MonoBehaviour
     public void cameraEdit(){
         shouldMove = false;
         transform.position = editPosition;
+        updateCenter();
         transform.LookAt(center);
     }
 
@@ -78,6 +85,7 @@ public class RotateCamera : MonoBehaviour
     }
 
     public void moveCamera(){
+        updateCenter();
         transform.position = defaultPosition;
         transform.LookAt(center);
         shouldMove = true;

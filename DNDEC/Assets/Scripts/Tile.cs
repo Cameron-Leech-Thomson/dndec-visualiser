@@ -7,14 +7,16 @@ using TMPro;
 public class Tile : MonoBehaviour
 {
 
-    private bool character = false;
+    private CharacterData character = null;
 
     private bool isQuitting = false;
 
     private bool difficultTerrain = false;
 
+    private float terrainOffset = 2.25f;
+
     public bool hasCharacter(){
-        return character;
+        return character != null;
     }
 
     public void addCharacter(string name, bool ally){
@@ -31,10 +33,11 @@ public class Tile : MonoBehaviour
             characterMarker.GetComponentInChildren<Canvas>().worldCamera = Camera.main;
             characterMarker.GetComponentInChildren<TextMeshProUGUI>().text = name;
 
-            character = true;
+            character = new CharacterData(name, ally);
 
             CreateAnchors anchors = GetComponent<CreateAnchors>();
-            anchors.removeAnchor(anchors.getCharacterAnchor());
+            GameObject charAnchor = anchors.getCharacterAnchor();
+            if (charAnchor != null) anchors.removeAnchor(charAnchor);
 
             if (isDifficultTerrain()){
                 GameObject terrainMarker = null;
@@ -45,7 +48,7 @@ public class Tile : MonoBehaviour
                 }
                 if (terrainMarker != null){
                     Vector3 pos = terrainMarker.transform.position;
-                    terrainMarker.transform.position = new Vector3(pos.x, pos.y + 2.25f, pos.z);
+                    terrainMarker.transform.position = new Vector3(pos.x, pos.y + terrainOffset, pos.z);
                 }
             }
         }        
@@ -60,7 +63,7 @@ public class Tile : MonoBehaviour
                 }
             }
             if (characterMarker != null){
-                character = false;
+                character = null;
                 Destroy(characterMarker);
 
                 CreateAnchors anchors = GetComponent<CreateAnchors>();
@@ -75,11 +78,15 @@ public class Tile : MonoBehaviour
                     }
                     if (terrainMarker != null){
                         Vector3 pos = terrainMarker.transform.position;
-                        terrainMarker.transform.position = new Vector3(pos.x, 1 + getHeight(), pos.z);
+                        terrainMarker.transform.position = new Vector3(pos.x, pos.y - terrainOffset, pos.z);
                     }
                 }
             }
         }
+    }
+
+    public CharacterData GetCharacter(){
+        return character;
     }
 
     private float getHeight(){
@@ -104,7 +111,7 @@ public class Tile : MonoBehaviour
             if (terrainMarker == null){
                 float height = getHeight();
 
-                if (hasCharacter()) height += 2.25f;
+                if (hasCharacter()) height += terrainOffset;
 
                 Instantiate(Resources.Load<GameObject>("Prefabs/Difficult Terrain Marker"), transform.position + new Vector3(0f, 1f + height, 0f),
                     Quaternion.Euler(0f, 0f, 0f), transform);

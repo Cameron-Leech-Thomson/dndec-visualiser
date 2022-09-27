@@ -68,9 +68,14 @@ public class CreateAnchors : MonoBehaviour
         ProBuilderMesh mesh = gameObject.GetComponent<ProBuilderMesh>();
         Vertex[] vertices = mesh.GetVertices();
         float height = Mathf.Abs(vertices[0].position.y);
-        GameObject obj = Instantiate(charAnchor, transform.position + new Vector3(0f, 1f + height, 0f), Quaternion.Euler(0f,0f,0f), transform) as GameObject;
-        obj.GetComponent<SphereCollider>().radius = distance / 4;
-        anchors.Add(obj);
+        Vector3 anchorPos = transform.position + new Vector3(0f, 0.75f + height, 0f);
+
+        Collider[] hitColliders = Physics.OverlapSphere(anchorPos, distance / 4, LayerMask.GetMask("Character", "Character Anchor"));
+        if (hitColliders.Length == 0){
+            GameObject obj = Instantiate(charAnchor, anchorPos, Quaternion.Euler(0f,0f,0f), transform) as GameObject;
+            obj.GetComponent<SphereCollider>().radius = distance / 4;
+            anchors.Add(obj);
+        }
     }
 
     public GameObject getCharacterAnchor(){
