@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 
 public class MoveTile : MonoBehaviour
 {
+
+    public GameObject uiContainer;
 
     private GameObject targetParent;
     private LayerMask targetLayer;
@@ -65,9 +68,26 @@ public class MoveTile : MonoBehaviour
         }
     }
 
+    private void setInteractable(bool val){
+        foreach(Transform child in uiContainer.transform){
+            Button button = child.gameObject.GetComponent<Button>();
+            if (button == null){
+                foreach(Transform subChild in child){
+                    Button subButton = subChild.gameObject.GetComponent<Button>();
+                    if (subButton != null){
+                        subButton.interactable = val;
+                    }
+                }
+            } else{
+                button.interactable = val;
+            }
+        }
+    }
+
     public IEnumerator movingObject(GameObject selectedObject){
         shouldMove = true;
         this.selectedObject = selectedObject;
+        setInteractable(false);
         foreach(Transform tile in targetParent.transform){
             if (tile.gameObject != selectedObject){
                 tile.gameObject.GetComponent<CreateAnchors>().recalculateAnchors();
@@ -76,6 +96,7 @@ public class MoveTile : MonoBehaviour
         while (shouldMove){
             yield return null;
         }
+        setInteractable(true);
         stopMovement();
         yield return new WaitForSeconds(0.1f);
         (cam.GetComponent<RotateCamera>() as RotateCamera).moveCamera();
