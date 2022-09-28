@@ -20,9 +20,12 @@ public class DataManager : MonoBehaviour
 
     private void Start() {
         path = Application.persistentDataPath + "/SavedEncounters/";
+        if (!Directory.Exists(path)){
+            Directory.CreateDirectory(path);
+        }
         LoadAllFiles();
 
-        StartCoroutine(loadPlayerPref());
+        if (PlayerPrefs.HasKey(loadPref)) StartCoroutine(loadPlayerPref());
     }
 
     private IEnumerator loadPlayerPref(){

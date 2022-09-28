@@ -13,6 +13,9 @@ public class DataManagerMenu : MonoBehaviour
 
     private void Start(){
         path = Application.persistentDataPath + "/SavedEncounters/";
+        if (!Directory.Exists(path)){
+            Directory.CreateDirectory(path);
+        }
         LoadAllFiles();
     }
 

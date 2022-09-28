@@ -104,6 +104,8 @@ public class PlacementController : MonoBehaviour
             Vector3.zero, Quaternion.Euler(0f, 0f, 0f), target.transform);
         newTile.GetComponent<CreateAnchors>().createAnchors();
         tiles.Add(newTile);
+        // Set skybox to default:
+        RenderSettings.skybox = Resources.Load<Material>("Skyboxes/Day");
     }
 
     public void SetHighlightBool(bool val){
