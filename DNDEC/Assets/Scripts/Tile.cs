@@ -128,7 +128,7 @@ public class Tile : MonoBehaviour
         return character;
     }
 
-    private float getHeight(){
+    public float getHeight(){
         ProBuilderMesh mesh = gameObject.GetComponent<ProBuilderMesh>();
         Vertex[] vertices = mesh.GetVertices();
         return Mathf.Abs(vertices[0].position.y);

@@ -32,9 +32,11 @@ public class MoveTile : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 100, targetLayer)){
                 GameObject objectHit = hit.collider.gameObject;
+                Tile tile = selectedObject.GetComponent<Tile>();
+                float height = tile.getHeight();
                 // Snapping to Anchors:
                 if (objectHit.layer == LayerMask.NameToLayer("Tile Anchor")){
-                    selectedObject.transform.position = objectHit.transform.position;
+                    selectedObject.transform.position = objectHit.transform.position + new Vector3(0f, height - 0.25f, 0f);
                     canPlace = true;
                 } // Stopping overlap: 
                 else if (objectHit.layer != LayerMask.NameToLayer("Tile")){
@@ -46,7 +48,7 @@ public class MoveTile : MonoBehaviour
                         }
                     }
                     if(!tooClose){
-                        selectedObject.transform.position = new Vector3(hit.point.x, 0f, hit.point.z); 
+                        selectedObject.transform.position = new Vector3(hit.point.x, height - 0.25f, hit.point.z); 
                     }         
                 }
 

@@ -223,7 +223,12 @@ public class TileOptions : MonoBehaviour
             stopAllCoroutines();
             cam.GetComponent<RotateCamera>().cameraEdit();
             selectedObject.GetComponentInParent<CreateAnchors>().destroyAnchors();
+
             selectedObject.layer = 0;
+            foreach(Transform child in selectedObject.transform){
+                if(child.gameObject.layer != LayerMask.NameToLayer("Character")) child.gameObject.layer = 0;
+            }
+
             StartCoroutine(moveTile.movingObject(selectedObject));
             placing = true;
         } else{
