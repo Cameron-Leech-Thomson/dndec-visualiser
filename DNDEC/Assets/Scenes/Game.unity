@@ -2271,6 +2271,7 @@ GameObject:
   - component: {fileID: 381078854}
   - component: {fileID: 381078853}
   - component: {fileID: 381078855}
+  - component: {fileID: 381078856}
   m_Layer: 0
   m_Name: PlacementController
   m_TagString: Untagged
@@ -2319,6 +2320,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1c8295a665a0e64eb58c5ec74830f5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &381078856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381078852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ec1f2bc451d7014cb612128cd9fba9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &419481035
@@ -12451,6 +12464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 847996010}
   moveTile: {fileID: 381078855}
+  moveCharacter: {fileID: 381078856}
   nameCharacter: {fileID: 503297004}
   errorMessage: {fileID: 6597147991355515672, guid: 0c34ddefb7000e3459ccf821ee39f216,
     type: 3}
@@ -12790,7 +12804,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1976298898}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1954620085}
+        m_TargetAssemblyTypeName: TileOptions, Assembly-CSharp
+        m_MethodName: moveChar
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1976298898
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public class TileOptions : MonoBehaviour
 {
     public GameObject target;
     public MoveTile moveTile;
+    public MoveCharacter moveCharacter;
     public GameObject nameCharacter;
     public ErrorMessage errorMessage;
     private GameObject selectedObject = null;
@@ -144,6 +145,22 @@ public class TileOptions : MonoBehaviour
         } else{
             return false;
         }
+    }
+
+    public void moveChar(){
+        if(selectedObject == null || !selectedObject.GetComponent<Tile>().hasCharacter()) return;
+        Tile tile = selectedObject.GetComponent<Tile>();
+
+        GameObject character = tile.GetCharacter();
+        if (character == null) return;
+
+        character.transform.parent = null;
+
+        setInteractable(false);
+        cam.GetComponent<RotateCamera>().cameraEdit();
+        character.layer = 0;
+        StartCoroutine(moveCharacter.movingObject(character));
+        placing = true;
     }
 
     public void addCharacter(){

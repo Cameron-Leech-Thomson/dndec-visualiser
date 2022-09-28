@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 4374445382028089431}
   - component: {fileID: 4374445382028089430}
   - component: {fileID: 4374445382028089425}
-  - component: {fileID: 4374445382028089424}
+  - component: {fileID: 284115062589555187}
   m_Layer: 0
   m_Name: Difficult Terrain Marker
   m_TagString: DifficultTerrain
@@ -1986,13 +1986,19 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!33 &4374445382028089424
-MeshFilter:
+--- !u!64 &284115062589555187
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4374445382028089427}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &6822974573430928918
 GameObject:

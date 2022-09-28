@@ -142,7 +142,7 @@ public class DataManager : MonoBehaviour
             // Get difficulty:
             data.isDifficultTerrain = tile.GetComponent<Tile>().isDifficultTerrain();
             // Get character:
-            data.character = tile.GetComponent<Tile>().GetCharacter();
+            data.character = tile.GetComponent<Tile>().GetCharacterData();
             // Add it to target data:
             _Target.tiles.Add(data);
         }

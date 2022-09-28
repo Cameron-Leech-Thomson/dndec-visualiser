@@ -70,12 +70,8 @@ public class Tile : MonoBehaviour
                 anchors.placeCharacterAnchor();
 
                 if(isDifficultTerrain()){
-                    GameObject terrainMarker = null;
-                    foreach(Transform child in transform){
-                        if (child.gameObject.CompareTag("DifficultTerrain")){
-                            terrainMarker = child.gameObject;
-                        }
-                    }
+                    GameObject terrainMarker = GetTerrainMarker();
+                    
                     if (terrainMarker != null){
                         Vector3 pos = terrainMarker.transform.position;
                         terrainMarker.transform.position = new Vector3(pos.x, pos.y - terrainOffset, pos.z);
@@ -85,7 +81,50 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public CharacterData GetCharacter(){
+    public void UpdateMarkers(){
+        GameObject character = GetCharacter();
+        GameObject difficultTerrain = GetTerrainMarker();
+        float height = getHeight();
+
+        Vector3 terrainPos;
+        Vector3 characterPos;
+        if (difficultTerrain != null){
+            terrainPos = difficultTerrain.transform.position;
+            if (character != null){
+                difficultTerrain.transform.position = transform.position + new Vector3(0f, 1f + height + terrainOffset, 0f);
+            } else{
+                difficultTerrain.transform.position = transform.position + new Vector3(0f, 1f + height, 0f);
+            }
+        } if (character != null){
+            characterPos = character.transform.position;
+            character.transform.position = transform.position + new Vector3(0f, 1f + height, 0f);
+        }
+    }
+
+    public GameObject GetTerrainMarker(){
+        if (!isDifficultTerrain()) return null;
+
+        foreach(Transform child in transform){
+            if (child.gameObject.CompareTag("DifficultTerrain")){
+                return child.gameObject;
+            }
+        }
+        return null;
+    }
+
+    public GameObject GetCharacter(){
+        if (!hasCharacter()) return null;
+
+        foreach(Transform child in transform){
+            if(child.gameObject.layer == LayerMask.NameToLayer("Character")){
+                return child.gameObject;
+            }
+        }
+
+        return null;
+    }
+
+    public CharacterData GetCharacterData(){
         return character;
     }
 
