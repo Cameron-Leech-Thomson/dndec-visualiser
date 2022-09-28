@@ -43,14 +43,31 @@ public class RotateCamera : MonoBehaviour
     }
 
     private void updateCenter(){
+        Bounds bounds = target.gameObject.GetComponent<Renderer>().bounds;
         // Get center of all GameObjects:
         foreach (Transform child in target){
             center += child.position;
+            bounds.Encapsulate(child.gameObject.GetComponent<Renderer>().bounds);
         }
         currentChildren = target.childCount;
+        float width = bounds.size.x;
+        float height = bounds.size.z;
 
-        center = center / target.childCount;    
-        editPosition = new Vector3(center.x, 20f, center.z);
+        float y = 20f;
+        if (width > 20f || height > 10f){
+            float widthExcess = width - 20f;
+            float heightExcess = height - 10f;
+            if (widthExcess < 0 && heightExcess > 0){
+                y = 20f + (heightExcess / 2);
+            } else if (widthExcess > 0 && heightExcess < 0){
+                y = 20f + (widthExcess / 2);
+            } else{
+                y = 20f + ((widthExcess + heightExcess) / 2);
+            }
+        }
+
+        center = bounds.center;
+        editPosition = new Vector3(center.x, y, center.z);
     }
 
     private void zoom(float inc){
@@ -62,7 +79,9 @@ public class RotateCamera : MonoBehaviour
     }
 
     public void zoomIn(){
-        zoom(5f);
+        if (defaultPosition.z + 5f <= 0){
+            zoom(5f);
+        }        
     }
 
     public void zoomOut(){
