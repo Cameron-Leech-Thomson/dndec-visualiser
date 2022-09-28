@@ -8,6 +8,7 @@ public class SceneLoader : MonoBehaviour
     
     public void loadScene(string sceneName){
         Scene currentScene = SceneManager.GetActiveScene();
+        StopAllCoroutines();
         // Load new scene:
         SceneManager.LoadScene(sceneName);
         // Unload old scene:

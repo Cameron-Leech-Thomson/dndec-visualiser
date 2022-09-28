@@ -37,7 +37,9 @@ public class CreateAnchors : MonoBehaviour
     }
 
     public void recalculateAnchors(){
-        StartCoroutine(createNewAnchors());
+        if (transform.parent.gameObject.activeSelf){
+            StartCoroutine(createNewAnchors());
+        }        
     }
 
     private IEnumerator removeAnchors(){
@@ -52,10 +54,12 @@ public class CreateAnchors : MonoBehaviour
 
     // ONLY USE ON DESTROY OF A TILE:
     public void destroyAnchors(){
-        foreach(GameObject anchor in anchors){
-            Destroy(anchor);
+        if (transform.parent.gameObject.activeSelf){
+            foreach(GameObject anchor in anchors){
+                Destroy(anchor);
+            }
+            anchors.Clear();
         }
-        anchors.Clear();
     }
 
     void placeAnchor(Vector3 position){

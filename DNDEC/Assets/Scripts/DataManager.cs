@@ -1,12 +1,10 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.ProBuilder;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.Events;
-using UnityEditor.Events;
 
 public class DataManager : MonoBehaviour
 {
@@ -18,10 +16,24 @@ public class DataManager : MonoBehaviour
     [SerializeField] private Target _Target = new Target();
 
     private string path;
+    private string loadPref = "toLoad";
 
     private void Start() {
         path = Application.persistentDataPath + "/SavedEncounters/";
         LoadAllFiles();
+
+        StartCoroutine(loadPlayerPref());
+    }
+
+    private IEnumerator loadPlayerPref(){
+        if(PlayerPrefs.HasKey(loadPref)){
+            // Load opened scene:
+            string loadPath = PlayerPrefs.GetString(loadPref);
+            yield return new WaitForSeconds(0.25f);
+            LoadFile(loadPath);
+            // Clear PlayerPref:
+            PlayerPrefs.DeleteKey(loadPref);
+        }
     }
 
     public void LoadAllFiles(){

@@ -175,13 +175,15 @@ public class Tile : MonoBehaviour
 
     private void OnDestroy() {
         if (!isQuitting){
-            Transform parent = transform.parent;
-            foreach(Transform child in parent){
-                CreateAnchors anchors = child.gameObject.GetComponent<CreateAnchors>();
-                if (!child.gameObject.Equals(gameObject)){
-                    anchors.recalculateAnchors();
-                } else{
-                    anchors.destroyAnchors();
+            if (gameObject.activeSelf){
+                Transform parent = transform.parent;
+                foreach(Transform child in parent){
+                    CreateAnchors anchors = child.gameObject.GetComponent<CreateAnchors>();
+                    if (!child.gameObject.Equals(gameObject)){
+                        anchors.recalculateAnchors();
+                    } else{
+                        anchors.destroyAnchors();
+                    }
                 }
             }
         }

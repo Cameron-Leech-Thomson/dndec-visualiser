@@ -86,7 +86,9 @@ public class PlacementController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (renderers.Count != 0){
             foreach(Renderer renderer in renderers){
-                renderer.material.DisableKeyword(emissionBool);
+                if (renderer != null){
+                    renderer.material.DisableKeyword(emissionBool); 
+                }                               
             }  
         }
     }
