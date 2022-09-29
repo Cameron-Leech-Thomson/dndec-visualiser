@@ -1,0 +1,103 @@
+{
+    "tiles": [
+        {
+            "type": "Grass",
+            "pos": [
+                0.0,
+                0.25,
+                0.0
+            ],
+            "height": 1,
+            "isDifficultTerrain": true,
+            "character": {
+                "name": "Sorcerer",
+                "ally": true
+            }
+        },
+        {
+            "type": "Dirt",
+            "pos": [
+                -1.8927030964732695e-7,
+                0.5,
+                -2.1649999618530275
+            ],
+            "height": 2,
+            "isDifficultTerrain": false,
+            "character": {
+                "name": "Ranger",
+                "ally": true
+            }
+        },
+        {
+            "type": "Stone",
+            "pos": [
+                1.8749449253082276,
+                0.0,
+                -1.0825002193450928
+            ],
+            "height": 0,
+            "isDifficultTerrain": true,
+            "character": {
+                "name": "",
+                "ally": false
+            }
+        },
+        {
+            "type": "Grass",
+            "pos": [
+                1.8749446868896485,
+                0.25,
+                -3.24750018119812
+            ],
+            "height": 1,
+            "isDifficultTerrain": false,
+            "character": {
+                "name": "",
+                "ally": false
+            }
+        },
+        {
+            "type": "Water",
+            "pos": [
+                3.749889850616455,
+                0.0,
+                -2.1650004386901857
+            ],
+            "height": 0,
+            "isDifficultTerrain": false,
+            "character": {
+                "name": "",
+                "ally": false
+            }
+        },
+        {
+            "type": "Water",
+            "pos": [
+                3.749889850616455,
+                0.0,
+                -2.384185791015625e-7
+            ],
+            "height": 0,
+            "isDifficultTerrain": false,
+            "character": {
+                "name": "",
+                "ally": false
+            }
+        },
+        {
+            "type": "Water",
+            "pos": [
+                1.8749449253082276,
+                0.0,
+                1.0824999809265137
+            ],
+            "height": 0,
+            "isDifficultTerrain": false,
+            "character": {
+                "name": "Sea Monster",
+                "ally": false
+            }
+        }
+    ],
+    "skybox": "Overcast"
+}
