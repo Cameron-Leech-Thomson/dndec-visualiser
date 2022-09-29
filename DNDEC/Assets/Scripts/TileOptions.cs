@@ -208,11 +208,14 @@ public class TileOptions : MonoBehaviour
             Destroy(selectedObject);
             setInteractable(false);
             selectedObject = null;
+            foreach(Transform child in target.transform){
+                child.GetComponent<CreateAnchors>().recalculateAnchors();
+            }
         } else{
             if (transform.parent.GetComponentInChildren<ErrorMessage>() == null){
                 ErrorMessage error = Instantiate(errorMessage, Vector3.zero, new Quaternion(0f, 0f, 0f, 1f), transform.parent) as ErrorMessage;
                 error.createErrorMessage("Cannot delete. You must keep at least one tile in the scene.");
-            }            
+            }
         }
     }
 
